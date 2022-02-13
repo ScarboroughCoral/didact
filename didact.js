@@ -1,3 +1,4 @@
+// 创建元素虚拟dom
 function createElement(type, props, ...children) {
   return {
     type,
@@ -12,6 +13,7 @@ function createElement(type, props, ...children) {
   }
 }
 
+// 创建文本虚拟dom
 function createTextElement(text) {
   return {
     type: "TEXT_ELEMENT",
@@ -22,6 +24,7 @@ function createTextElement(text) {
   }
 }
 
+// 通过fiber创建真正的dom
 function createDom(fiber) {
   const dom =
     fiber.type == "TEXT_ELEMENT"
@@ -39,6 +42,7 @@ const isProperty = key =>
 const isNew = (prev, next) => key =>
   prev[key] !== next[key]
 const isGone = (prev, next) => key => !(key in next)
+// 更新dom
 function updateDom(dom, prevProps, nextProps) {
   //Remove old or changed event listeners
   Object.keys(prevProps)
@@ -96,6 +100,7 @@ function commitRoot() {
   wipRoot = null
 }
 
+// 最终更新提交真实dom
 function commitWork(fiber) {
   if (!fiber) {
     return
@@ -137,6 +142,7 @@ function commitDeletion(fiber, domParent) {
   }
 }
 
+// 初始化nextUnitOfWork
 function render(element, container) {
   wipRoot = {
     dom: container,
